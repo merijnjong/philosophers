@@ -1,25 +1,27 @@
-NAME = philo
+NAME	:= philo
+CFLAGS	:= -g -Wextra -Wall -Werror
 
-SRCS = philo.c philo_utils.c simulation.c init.c
+INCS	:= -I./incs
+SRCS	:= $(shell find ./srcs -name "*.c")
+OBJS	:= ${SRCS:.c=.o}
 
-OBJS = $(SRCS:.c=.o)
-
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread
+CC      := gcc
+AR      := ar
+ARFLAGS := rcs
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -o $@ -c $< $(INCS) && printf "Compiling: $(notdir $<)\n"
+
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) && printf "Linking: $(NAME)\n"
 
 clean:
-	rm -f $(OBJS)
+	@rm -rf $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -rf $(NAME)
 
 re: fclean all
 

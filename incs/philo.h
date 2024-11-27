@@ -6,13 +6,12 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 14:45:53 by mjong             #+#    #+#             */
-/*   Updated: 2024/06/04 14:46:21 by mjong            ###   ########.fr       */
+/*   Updated: 2024/11/27 21:20:42 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
-
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -50,16 +49,16 @@ typedef struct s_philo
     t_data          *data;
 } t_philo;
 
-// Utils
+// philo_utils.c
 long long   get_time(void);
 void        smart_sleep(long long time);
 void        print_status(t_data *data, int id, char *status);
 
-// Init
+// init.c
 int         init_data(t_data *data, int argc, char **argv);
 int         init_philos(t_philo **philos, t_data *data);
 
-// Core
+// simulation.c
 void        *philosopher_routine(void *arg);
 int         start_simulation(t_philo *philos, t_data *data);
 
