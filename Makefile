@@ -1,24 +1,26 @@
-NAME	:= philo
-CFLAGS	:= -g -Wextra -Wall -Werror
+NAME = philo
 
-HEADERS	:= -I./include
-SRCS	:= philo.c
-OBJS	:= ${SRCS:.c=.o}
+SRCS = philo.c philo_utils.c simulation.c init.c
+
+OBJS = $(SRCS:.c=.o)
+
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -pthread
 
 all: $(NAME)
 
-%.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
-
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@rm -rf $(OBJS)
+	rm -f $(OBJS)
 
 fclean: clean
-	@rm -rf $(NAME)
+	rm -f $(NAME)
 
-re: clean all
+re: fclean all
 
-.PHONY: all, clean, fclean, re
+.PHONY: all clean fclean re

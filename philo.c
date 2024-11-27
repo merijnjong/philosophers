@@ -12,7 +12,37 @@
 
 #include "philo.h"
 
-int	main(void)
+int main(int argc, char **argv)
 {
-	
+    t_data  data;
+    t_philo *philos;
+
+    if (argc != 5 && argc != 6)
+    {
+        printf("Error: wrong number of arguments\n");
+        return (1);
+    }
+
+    if (init_data(&data, argc, argv))
+        return (1);
+
+    philos = malloc(sizeof(t_philo) * data.num_philos);
+    if (!philos)
+        return (1);
+
+    if (init_philos(&philos, &data))
+    {
+        free(philos);
+        return (1);
+    }
+
+    if (start_simulation(philos, &data))
+    {
+        // Cleanup
+        free(philos);
+        return (1);
+    }
+
+    free(philos);
+    return (0);
 }
