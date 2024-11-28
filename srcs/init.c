@@ -6,13 +6,13 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:12:23 by mjong             #+#    #+#             */
-/*   Updated: 2024/11/27 21:15:49 by mjong            ###   ########.fr       */
+/*   Updated: 2024/11/28 15:20:17 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	validate_args(int argc, char **argv)
+static int	check_args(int argc, char **argv)
 {
 	int	i;
 	int	j;
@@ -32,7 +32,7 @@ static int	validate_args(int argc, char **argv)
 	return (0);
 }
 
-static int	init_mutexes(t_data *data)
+static int	init_mutex(t_data *data)
 {
 	int	i;
 
@@ -51,7 +51,7 @@ static int	init_mutexes(t_data *data)
 	return (0);
 }
 
-static int	validate_values(t_data *data, int argc)
+static int	check_values(t_data *data, int argc)
 {
 	if (data->num_philos < 1 || data->time_to_die < 0
 		|| data->time_to_eat < 0 || data->time_to_sleep < 0
@@ -65,7 +65,7 @@ static int	validate_values(t_data *data, int argc)
 
 int	init_data(t_data *data, int argc, char **argv)
 {
-	if (validate_args(argc, argv))
+	if (check_args(argc, argv))
 	{
 		printf("Error: invalid arguments\n");
 		return (1);
@@ -76,9 +76,9 @@ int	init_data(t_data *data, int argc, char **argv)
 	data->time_to_sleep = atoi(argv[4]);
 	data->must_eat_count = (argc == 6) ? atoi(argv[5]) : -1;
 	data->someone_died = 0;
-	if (validate_values(data, argc))
+	if (check_values(data, argc))
 		return (1);
-	return (init_mutexes(data));
+	return (init_mutex(data));
 }
 
 int	init_philos(t_philo **philos, t_data *data)

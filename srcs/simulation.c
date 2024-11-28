@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 17:12:23 by mjong             #+#    #+#             */
-/*   Updated: 2024/11/27 21:16:13 by mjong            ###   ########.fr       */
+/*   Updated: 2024/11/28 15:18:05 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ void	*philosopher_routine(void *arg)
 
 static int	check_meals(t_philo *philos, t_data *data)
 {
-	int	i;
 	int	all_ate;
+	int	i;
 
-	i = 0;
 	all_ate = 1;
+	i = 0;
 	while (i < data->num_philos)
 	{
 		if (philos[i].meals_eaten < data->must_eat_count)
