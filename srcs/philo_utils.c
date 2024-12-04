@@ -6,13 +6,13 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2024/11/27 21:20:59 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/04 14:14:25 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long   get_time(void)
+long long get_time(void)
 {
     struct timeval tv;
 

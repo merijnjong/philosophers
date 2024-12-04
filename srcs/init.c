@@ -6,13 +6,13 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:12:23 by mjong             #+#    #+#             */
-/*   Updated: 2024/11/28 15:20:17 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/04 14:14:10 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	check_args(int argc, char **argv)
+static int	check_input(int argc, char **argv)
 {
 	int	i;
 	int	j;
@@ -32,7 +32,7 @@ static int	check_args(int argc, char **argv)
 	return (0);
 }
 
-static int	init_mutex(t_data *data)
+static int	init_mutexes(t_data *data)
 {
 	int	i;
 
@@ -46,26 +46,16 @@ static int	init_mutex(t_data *data)
 			return (1);
 		i++;
 	}
-	if (pthread_mutex_init(&data->print_mutex, NULL))
+	if (pthread_mutex_init(&data->print_mutex, NULL) ||
+		pthread_mutex_init(&data->death_mutex, NULL) ||
+		pthread_mutex_init(&data->meal_mutex, NULL))
 		return (1);
-	return (0);
-}
-
-static int	check_values(t_data *data, int argc)
-{
-	if (data->num_philos < 1 || data->time_to_die < 0
-		|| data->time_to_eat < 0 || data->time_to_sleep < 0
-		|| (argc == 6 && data->must_eat_count <= 0))
-	{
-		printf("Error: invalid arguments values\n");
-		return (1);
-	}
 	return (0);
 }
 
 int	init_data(t_data *data, int argc, char **argv)
 {
-	if (check_args(argc, argv))
+	if (check_input(argc, argv))
 	{
 		printf("Error: invalid arguments\n");
 		return (1);
@@ -76,31 +66,38 @@ int	init_data(t_data *data, int argc, char **argv)
 	data->time_to_sleep = atoi(argv[4]);
 	data->must_eat_count = (argc == 6) ? atoi(argv[5]) : -1;
 	data->someone_died = 0;
-	if (check_values(data, argc))
+	data->all_ate = 0;
+
+	if (data->num_philos < 1 || data->time_to_die < MIN_TIME ||
+		data->time_to_eat < MIN_TIME || data->time_to_sleep < MIN_TIME ||
+		(argc == 6 && data->must_eat_count <= 0))
+	{
+		printf("Error: invalid argument values\n");
 		return (1);
-	return (init_mutex(data));
+	}
+	return (init_mutexes(data));
 }
 
-int	init_philos(t_philo **philos, t_data *data)
+int	init_philos(t_philo *philos, t_data *data)
 {
 	int	i;
 
 	i = 0;
 	while (i < data->num_philos)
 	{
-		(*philos)[i].id = i + 1;
-		(*philos)[i].meals_eaten = 0;
-		(*philos)[i].last_meal_time = get_time();
-		(*philos)[i].data = data;
+		philos[i].id = i + 1;
+		philos[i].meals_eaten = 0;
+		philos[i].last_meal_time = get_time();
+		philos[i].data = data;
 		if (i == data->num_philos - 1)
 		{
-			(*philos)[i].left_fork = 0;
-			(*philos)[i].right_fork = i;
+			philos[i].left_fork = 0;
+			philos[i].right_fork = i;
 		}
 		else
 		{
-			(*philos)[i].left_fork = i;
-			(*philos)[i].right_fork = i + 1;
+			philos[i].left_fork = i;
+			philos[i].right_fork = i + 1;
 		}
 		i++;
 	}

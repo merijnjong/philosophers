@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 14:45:51 by mjong             #+#    #+#             */
-/*   Updated: 2024/11/27 21:16:49 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/04 14:14:45 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     philos = malloc(sizeof(t_philo) * data.num_philos);
     if (!philos)
         return (1);
-    if (init_philos(&philos, &data))
+    if (init_philos(philos, &data))
     {
         free(philos);
         return (1);
