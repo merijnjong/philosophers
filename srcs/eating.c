@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:45 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/05 13:02:12 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/05 13:39:51 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	finish_eating(t_philo *philo, pthread_mutex_t *first,
 	pthread_mutex_unlock(first);
 }
 
-static void	philo_eat(t_philo *philo)
+void	philo_eat(t_philo *philo)
 {
 	pthread_mutex_t	*first_fork;
 	pthread_mutex_t	*second_fork;

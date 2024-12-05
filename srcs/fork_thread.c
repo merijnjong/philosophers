@@ -6,13 +6,13 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:18:25 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/05 13:11:56 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/05 13:40:33 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	get_forks(t_philo *philo, pthread_mutex_t **first,
+void	get_forks(t_philo *philo, pthread_mutex_t **first,
 		pthread_mutex_t **second)
 {
 	if (philo->id % 2)
@@ -27,7 +27,7 @@ static void	get_forks(t_philo *philo, pthread_mutex_t **first,
 	}
 }
 
-static void	take_forks(t_philo *philo, pthread_mutex_t *first,
+void	take_forks(t_philo *philo, pthread_mutex_t *first,
 		pthread_mutex_t *second)
 {
 	pthread_mutex_lock(first);
@@ -36,7 +36,7 @@ static void	take_forks(t_philo *philo, pthread_mutex_t *first,
 	print_message(philo, "has taken a fork");
 }
 
-static int	create_threads(t_program *program)
+int	create_threads(t_program *program)
 {
 	int	i;
 
@@ -53,7 +53,7 @@ static int	create_threads(t_program *program)
 	return (0);
 }
 
-static void	join_threads(t_program *program)
+void	join_threads(t_program *program)
 {
 	int	i;
 

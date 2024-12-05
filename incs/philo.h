@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 14:45:53 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/05 13:13:22 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/05 13:56:09 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,22 +63,36 @@ typedef struct s_program
 	pthread_t			monitor;
 }	t_program;
 
+// check.c
+void	wait_for_start(t_philo *philo);
+int		check_death(t_philo *philo);
+int		monitor_philos(t_program *program);
+int		should_continue(t_philo *philo);
+
+// eating.c
+void	philo_eat(t_philo *philo);
+
 // forks_thread.c
-static int	create_threads(t_program *program);
-static void	join_threads(t_program *program);
+int		create_threads(t_program *program);
+void	join_threads(t_program *program);
+void	take_forks(t_philo *philo, pthread_mutex_t *first,
+			pthread_mutex_t *second);
+
+void	get_forks(t_philo *philo, pthread_mutex_t **first,
+			pthread_mutex_t **second);
 
 // philo_utils.c
-size_t		get_current_time(void);
-int			ft_usleep(size_t milliseconds);
-int			ft_atoi(const char *str);
-void		print_message(t_philo *philo, char *msg);
+size_t	get_current_time(void);
+int		ft_usleep(size_t milliseconds);
+int		ft_atoi(const char *str);
+void	print_message(t_philo *philo, char *msg);
 
 // init.c
-int			init_program(t_program *program, int argc, char **argv);
+int		init_program(t_program *program, int argc, char **argv);
 
 // routine.c
-void		*philo_routine(void *arg);
-void		*monitor_routine(void *arg);
-int			check_meals(t_program *program);
+void	*philo_routine(void *arg);
+void	*monitor_routine(void *arg);
+int		check_meals(t_program *program);
 
 #endif
