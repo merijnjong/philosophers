@@ -12,9 +12,9 @@
 
 #include "philo.h"
 
-int	should_continue(t_philo *philo)
+int	can_continue(t_philo *philo)
 {
-	return (!check_death(philo)
+	return ((check_death(philo) == 0)
 		&& (philo->meals_eaten != philo->num_times_to_eat));
 }
 
@@ -24,12 +24,12 @@ static int	check_philo_death(t_program *program, t_philo *philo)
 
 	pthread_mutex_lock(&program->meal_lock);
 	time = get_current_time();
-	if ((time - philo->last_meal) >= philo->time_to_die)
+	if (((time - philo->last_meal) >= philo->time_to_die) != 0)
 	{
 		pthread_mutex_lock(&program->dead_lock);
 		program->dead_flag = 1;
 		pthread_mutex_unlock(&program->dead_lock);
-		print_message(philo, "died");
+		print_message(philo, DIED);
 		pthread_mutex_unlock(&program->meal_lock);
 		usleep(1000);
 		return (1);
@@ -45,7 +45,7 @@ int	monitor_philos(t_program *program)
 	i = 0;
 	while (i < program->philos[0].num_of_philos)
 	{
-		if (check_philo_death(program, &program->philos[i]))
+		if ((check_philo_death(program, &program->philos[i])) != 0)
 			return (1);
 		i++;
 	}

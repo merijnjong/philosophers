@@ -17,19 +17,19 @@ static int	check_args(int argc, char **argv)
 	int	i;
 	int	j;
 
-	if (argc != 5 && argc != 6)
+	if ((argc != 5 && argc != 6) != 0)
 		return (1);
 	i = 1;
-	while (argv[i])
+	while (argv[i] != NULL)
 	{
 		j = 0;
-		while (argv[i][j])
+		while (argv[i][j] != 0)
 		{
-			if (argv[i][j] < '0' || argv[i][j] > '9')
+			if ((argv[i][j] < '0' || argv[i][j] > '9') != 0)
 				return (1);
 			j++;
 		}
-		if (ft_atoi(argv[i]) <= 0)
+		if ((ft_atoi(argv[i]) <= 0) != 0)
 			return (1);
 		i++;
 	}
@@ -76,14 +76,14 @@ int	main(int argc, char **argv)
 {
 	t_program	program;
 
-	if (check_args(argc, argv))
+	if ((check_args(argc, argv)) != 0)
 	{
 		printf("Error: Invalid arguments\n");
 		return (1);
 	}
-	if (init_program(&program, argc, argv))
+	if ((init_program(&program, argc, argv)) != 0)
 		return (1);
-	if (create_threads(&program))
+	if ((create_threads(&program)) != 0)
 		return (1);
 	set_simulation_start(&program);
 	join_threads(&program);

@@ -17,7 +17,7 @@ static void	start_eating(t_philo *philo)
 	pthread_mutex_lock(philo->meal_lock);
 	philo->last_meal = get_current_time();
 	philo->eating = 1;
-	print_message(philo, "is eating");
+	print_message(philo, EATING);
 	pthread_mutex_unlock(philo->meal_lock);
 }
 
@@ -49,14 +49,14 @@ int	check_meals(t_program *p)
 	int	i;
 	int	finished;
 
-	if (p->philos[0].num_times_to_eat == -1)
+	if ((p->philos[0].num_times_to_eat == -1) != 0)
 		return (0);
 	i = 0;
 	finished = 0;
 	while (i < p->philos[0].num_of_philos)
 	{
 		pthread_mutex_lock(&p->meal_lock);
-		if (p->philos[i].meals_eaten >= p->philos[i].num_times_to_eat)
+		if ((p->philos[i].meals_eaten >= p->philos[i].num_times_to_eat) != 0)
 			finished++;
 		pthread_mutex_unlock(&p->meal_lock);
 		i++;

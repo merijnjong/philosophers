@@ -67,7 +67,7 @@ typedef struct s_program
 void	wait_for_start(t_philo *philo);
 int		check_death(t_philo *philo);
 int		monitor_philos(t_program *program);
-int		should_continue(t_philo *philo);
+int		can_continue(t_philo *philo);
 
 // eating.c
 void	philo_eat(t_philo *philo);

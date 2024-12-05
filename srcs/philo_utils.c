@@ -16,7 +16,7 @@ size_t	get_current_time(void)
 {
 	struct timeval	time;
 
-	if (gettimeofday(&time, NULL) == -1)
+	if ((gettimeofday(&time, NULL) == -1) != 0)
 		write(2, "gettimeofday() error\n", 22);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
@@ -40,15 +40,15 @@ int	ft_atoi(const char *str)
 	i = 0;
 	result = 0;
 	sign = 1;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+	while ((str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)) != 0)
 		i++;
-	if (str[i] == '-' || str[i] == '+')
+	if ((str[i] == '-' || str[i] == '+') != 0)
 	{
-		if (str[i] == '-')
+		if ((str[i] == '-') != 0)
 			sign = -1;
 		i++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
+	while ((str[i] >= '0' && str[i] <= '9') != 0)
 	{
 		result = result * 10 + (str[i] - '0');
 		i++;
@@ -59,7 +59,7 @@ int	ft_atoi(const char *str)
 void	print_message(t_philo *philo, char *msg)
 {
 	pthread_mutex_lock(philo->dead_lock);
-	if (!(*philo->dead) || msg[0] == 'd')
+	if ((*philo->dead == 0) || (msg[0] == 'd') != 0)
 	{
 		pthread_mutex_lock(philo->write_lock);
 		printf("%zu %d %s\n", get_current_time() - philo->start_time, philo->id,

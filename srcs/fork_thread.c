@@ -15,7 +15,7 @@
 void	get_forks(t_philo *philo, pthread_mutex_t **first,
 		pthread_mutex_t **second)
 {
-	if (philo->id % 2)
+	if ((philo->id % 2) != 0)
 	{
 		*first = philo->l_fork;
 		*second = philo->r_fork;
@@ -31,9 +31,9 @@ void	take_forks(t_philo *philo, pthread_mutex_t *first,
 		pthread_mutex_t *second)
 {
 	pthread_mutex_lock(first);
-	print_message(philo, "has taken a fork");
+	print_message(philo, FORK_TAKEN);
 	pthread_mutex_lock(second);
-	print_message(philo, "has taken a fork");
+	print_message(philo, FORK_TAKEN);
 }
 
 int	create_threads(t_program *program)
@@ -43,12 +43,12 @@ int	create_threads(t_program *program)
 	i = 0;
 	while (i < program->philos[0].num_of_philos)
 	{
-		if (pthread_create(&program->philos[i].thread, NULL, philo_routine,
-				&program->philos[i]))
+		if ((pthread_create(&program->philos[i].thread, NULL, philo_routine,
+				&program->philos[i])) != 0)
 			return (1);
 		i++;
 	}
-	if (pthread_create(&program->monitor, NULL, monitor_routine, program))
+	if ((pthread_create(&program->monitor, NULL, monitor_routine, program)) != 0)
 		return (1);
 	return (0);
 }

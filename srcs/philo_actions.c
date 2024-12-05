@@ -15,7 +15,7 @@
 static void	handle_single_philo(t_philo *philo)
 {
 	pthread_mutex_lock(philo->r_fork);
-	print_message(philo, "has taken a fork");
+	print_message(philo, FORK_TAKEN);
 	pthread_mutex_lock(philo->meal_lock);
 	philo->last_meal = get_current_time();
 	pthread_mutex_unlock(philo->meal_lock);
@@ -28,18 +28,18 @@ static void	init_philo_state(t_philo *philo)
 	pthread_mutex_lock(philo->meal_lock);
 	philo->last_meal = get_current_time();
 	pthread_mutex_unlock(philo->meal_lock);
-	if (philo->id % 2)
+	if ((philo->id % 2) != 0)
 		ft_usleep(philo->time_to_eat);
 }
 
 static void	philo_cycle(t_philo *philo)
 {
-	print_message(philo, "is thinking");
+	print_message(philo, THINKING);
 	ft_usleep(1);
 	philo_eat(philo);
-	if (philo->meals_eaten != philo->num_times_to_eat)
+	if ((philo->meals_eaten != philo->num_times_to_eat) != 0)
 	{
-		print_message(philo, "is sleeping");
+		print_message(philo, SLEEPING);
 		ft_usleep(philo->time_to_sleep);
 	}
 }
@@ -50,13 +50,13 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	wait_for_start(philo);
-	if (philo->num_of_philos == 1)
+	if ((philo->num_of_philos == 1) != 0)
 	{
 		handle_single_philo(philo);
 		return (NULL);
 	}
 	init_philo_state(philo);
-	while (should_continue(philo))
+	while (can_continue(philo) != 0)
 		philo_cycle(philo);
 	return (NULL);
 }
@@ -69,9 +69,9 @@ void	*monitor_routine(void *arg)
 	wait_for_start(&program->philos[0]);
 	while (1)
 	{
-		if (monitor_philos(program))
+		if ((monitor_philos(program)) != 0)
 			return (NULL);
-		if (check_meals(program))
+		if ((check_meals(program)) != 0)
 			return (NULL);
 		usleep(50);
 	}
