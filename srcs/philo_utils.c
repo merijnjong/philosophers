@@ -6,33 +6,66 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/04 14:14:25 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/05 13:01:06 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long get_time(void)
+size_t	get_current_time(void)
 {
-    struct timeval tv;
+	struct timeval	time;
 
-    gettimeofday(&tv, NULL);
-    return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	if (gettimeofday(&time, NULL) == -1)
+		write(2, "gettimeofday() error\n", 22);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void smart_sleep(long long time)
+int	ft_usleep(size_t milliseconds)
 {
-    long long start;
+	size_t	start;
 
-    start = get_time();
-    while (get_time() - start < time)
-        usleep(100);
+	start = get_current_time();
+	while ((get_current_time() - start) < milliseconds)
+		usleep(500);
+	return (0);
 }
 
-void print_status(t_data *data, int id, char *status)
+int	ft_atoi(const char *str)
 {
-    pthread_mutex_lock(&data->print_mutex);
-    if (!data->someone_died)
-        printf("%lld %d %s\n", get_time() - data->start_time, id, status);
-    pthread_mutex_unlock(&data->print_mutex);
+	int		i;
+	long	result;
+	int		sign;
+
+	i = 0;
+	result = 0;
+	sign = 1;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (sign * result);
+}
+
+void	print_message(t_philo *philo, char *msg)
+{
+	pthread_mutex_lock(philo->dead_lock);
+	if (!(*philo->dead) || msg[0] == 'd')
+	{
+		pthread_mutex_lock(philo->write_lock);
+		printf("%zu %d %s\n", get_current_time() - philo->start_time, philo->id,
+			msg);
+		fflush(stdout);
+		pthread_mutex_unlock(philo->write_lock);
+	}
+	pthread_mutex_unlock(philo->dead_lock);
 }

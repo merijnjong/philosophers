@@ -6,37 +6,87 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 14:45:51 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/04 14:14:45 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/05 13:06:19 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int main(int argc, char **argv)
+static int	check_args(int argc, char **argv)
 {
-    t_data  data;
-    t_philo *philos;
+	int	i;
+	int	j;
 
-    if (argc != 5 && argc != 6)
-    {
-        printf("Error: wrong number of arguments\n");
-        return (1);
-    }
-    if (init_data(&data, argc, argv))
-        return (1);
-    philos = malloc(sizeof(t_philo) * data.num_philos);
-    if (!philos)
-        return (1);
-    if (init_philos(philos, &data))
-    {
-        free(philos);
-        return (1);
-    }
-    if (start_simulation(philos, &data))
-    {
-        free(philos);
-        return (1);
-    }
-    free(philos);
-    return (0);
+	if (argc != 5 && argc != 6)
+		return (1);
+	i = 1;
+	while (argv[i])
+	{
+		j = 0;
+		while (argv[i][j])
+		{
+			if (argv[i][j] < '0' || argv[i][j] > '9')
+				return (1);
+			j++;
+		}
+		if (ft_atoi(argv[i]) <= 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static void	cleanup(t_program *program)
+{
+	int	i;
+
+	i = 0;
+	while (i < program->philos[0].num_of_philos)
+	{
+		pthread_mutex_destroy(&program->forks[i]);
+		i++;
+	}
+	pthread_mutex_destroy(&program->write_lock);
+	pthread_mutex_destroy(&program->dead_lock);
+	pthread_mutex_destroy(&program->meal_lock);
+	pthread_mutex_destroy(&program->start_lock);
+	free(program->forks);
+	free(program->philos);
+}
+
+static void	set_simulation_start(t_program *program)
+{
+	int		i;
+	size_t	start_time;
+
+	start_time = get_current_time();
+	i = 0;
+	while (i < program->philos[0].num_of_philos)
+	{
+		program->philos[i].start_time = start_time;
+		program->philos[i].last_meal = start_time;
+		i++;
+	}
+	pthread_mutex_lock(&program->start_lock);
+	program->start_flag = 1;
+	pthread_mutex_unlock(&program->start_lock);
+}
+
+int	main(int argc, char **argv)
+{
+	t_program	program;
+
+	if (check_args(argc, argv))
+	{
+		printf("Error: Invalid arguments\n");
+		return (1);
+	}
+	if (init_program(&program, argc, argv))
+		return (1);
+	if (create_threads(&program))
+		return (1);
+	set_simulation_start(&program);
+	join_threads(&program);
+	cleanup(&program);
+	return (0);
 }

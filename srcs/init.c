@@ -6,100 +6,97 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:12:23 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/04 14:14:10 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/05 12:58:28 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	check_input(int argc, char **argv)
-{
-	int	i;
-	int	j;
-
-	i = 1;
-	while (i < argc)
-	{
-		j = 0;
-		while (argv[i][j])
-		{
-			if (argv[i][j] < '0' || argv[i][j] > '9')
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
-
-static int	init_mutexes(t_data *data)
+static int	init_mutexes(t_program *program, int num_philos)
 {
 	int	i;
 
-	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philos);
-	if (!data->forks)
+	program->forks = malloc(sizeof(pthread_mutex_t) * num_philos);
+	if (!program->forks)
 		return (1);
 	i = 0;
-	while (i < data->num_philos)
+	while (i < num_philos)
 	{
-		if (pthread_mutex_init(&data->forks[i], NULL))
+		if (pthread_mutex_init(&program->forks[i], NULL))
 			return (1);
 		i++;
 	}
-	if (pthread_mutex_init(&data->print_mutex, NULL) ||
-		pthread_mutex_init(&data->death_mutex, NULL) ||
-		pthread_mutex_init(&data->meal_mutex, NULL))
+	if (pthread_mutex_init(&program->write_lock, NULL))
 		return (1);
+	if (pthread_mutex_init(&program->dead_lock, NULL))
+		return (1);
+	if (pthread_mutex_init(&program->meal_lock, NULL))
+		return (1);
+	if (pthread_mutex_init(&program->start_lock, NULL))
+		return (1);
+	program->start_flag = 0;
 	return (0);
 }
 
-int	init_data(t_data *data, int argc, char **argv)
+static int	init_philos(t_program *program, char **argv, int num_philos, int i)
 {
-	if (check_input(argc, argv))
+	while (i < num_philos)
 	{
-		printf("Error: invalid arguments\n");
-		return (1);
+		program->philos[i].id = i + 1;
+		program->philos[i].eating = 0;
+		program->philos[i].meals_eaten = 0;
+		program->philos[i].last_meal = get_current_time();
+		program->philos[i].time_to_die = ft_atoi(argv[2]);
+		program->philos[i].time_to_eat = ft_atoi(argv[3]);
+		program->philos[i].time_to_sleep = ft_atoi(argv[4]);
+		program->philos[i].start_time = get_current_time();
+		program->philos[i].num_of_philos = num_philos;
+		program->philos[i].num_times_to_eat = -1;
+		if (argv[5])
+			program->philos[i].num_times_to_eat = ft_atoi(argv[5]);
+		program->philos[i].dead = &program->dead_flag;
+		program->philos[i].write_lock = &program->write_lock;
+		program->philos[i].dead_lock = &program->dead_lock;
+		program->philos[i].meal_lock = &program->meal_lock;
+		program->philos[i].start_lock = &program->start_lock;
+		program->philos[i].program = program;
+		i++;
 	}
-	data->num_philos = atoi(argv[1]);
-	data->time_to_die = atoi(argv[2]);
-	data->time_to_eat = atoi(argv[3]);
-	data->time_to_sleep = atoi(argv[4]);
-	data->must_eat_count = (argc == 6) ? atoi(argv[5]) : -1;
-	data->someone_died = 0;
-	data->all_ate = 0;
-
-	if (data->num_philos < 1 || data->time_to_die < MIN_TIME ||
-		data->time_to_eat < MIN_TIME || data->time_to_sleep < MIN_TIME ||
-		(argc == 6 && data->must_eat_count <= 0))
-	{
-		printf("Error: invalid argument values\n");
-		return (1);
-	}
-	return (init_mutexes(data));
+	return (0);
 }
 
-int	init_philos(t_philo *philos, t_data *data)
+static void	assign_forks(t_program *program, int num_philos)
 {
 	int	i;
 
 	i = 0;
-	while (i < data->num_philos)
+	while (i < num_philos)
 	{
-		philos[i].id = i + 1;
-		philos[i].meals_eaten = 0;
-		philos[i].last_meal_time = get_time();
-		philos[i].data = data;
-		if (i == data->num_philos - 1)
-		{
-			philos[i].left_fork = 0;
-			philos[i].right_fork = i;
-		}
+		program->philos[i].l_fork = &program->forks[i];
+		if (i == num_philos - 1)
+			program->philos[i].r_fork = &program->forks[0];
 		else
-		{
-			philos[i].left_fork = i;
-			philos[i].right_fork = i + 1;
-		}
+			program->philos[i].r_fork = &program->forks[i + 1];
 		i++;
 	}
+}
+
+int	init_program(t_program *program, int argc, char **argv)
+{
+	int	num_philos;
+
+	(void)argc;
+	num_philos = ft_atoi(argv[1]);
+	if (num_philos > 200)
+		return (1);
+	program->dead_flag = 0;
+	if (init_mutexes(program, num_philos))
+		return (1);
+	program->philos = malloc(sizeof(t_philo) * num_philos);
+	if (!program->philos)
+		return (1);
+	if (init_philos(program, argv, num_philos, 0))
+		return (1);
+	assign_forks(program, num_philos);
 	return (0);
 }
