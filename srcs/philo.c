@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 14:45:51 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/05 13:06:19 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/06 13:31:32 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static int	check_args(int argc, char **argv)
 		char_index = 0;
 		while (argv[arg_index][char_index] != 0)
 		{
-			if ((argv[arg_index][char_index] < '0' || argv[arg_index][char_index] > '9') != 0)
+			if ((argv[arg_index][char_index] < '0'
+				|| argv[arg_index][char_index] > '9') != 0)
 				return (1);
 			char_index++;
 		}

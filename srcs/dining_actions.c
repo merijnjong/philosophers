@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   eating.c                                           :+:      :+:    :+:   */
+/*   dining_actions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:45 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/05 13:39:51 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/06 13:32:04 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	philo_eat(t_philo *philo)
 
 int	check_meals(t_program *p)
 {
-	int index;
-	int finished;
+	int	index;
+	int	finished;
 
 	if ((p->philos[0].num_times_to_eat == -1) != 0)
 		return (0);
@@ -56,7 +56,8 @@ int	check_meals(t_program *p)
 	while (index < p->philos[0].num_of_philos)
 	{
 		pthread_mutex_lock(&p->meal_lock);
-		if ((p->philos[index].meals_eaten >= p->philos[index].num_times_to_eat) != 0)
+		if ((p->philos[index].meals_eaten
+				>= p->philos[index].num_times_to_eat) != 0)
 			finished++;
 		pthread_mutex_unlock(&p->meal_lock);
 		index++;
