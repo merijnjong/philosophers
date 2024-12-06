@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check.c                                            :+:      :+:    :+:   */
+/*   check.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 15:42:19 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/05 13:55:59 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/06 15:10:13 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	check_philo_death(t_program *program, t_philo *philo)
 	return (0);
 }
 
-int	monitor_philos(t_program *program)
+int	check_philos(t_program *program)
 {
 	int	i;
 

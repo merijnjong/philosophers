@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 14:45:53 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/05 13:56:09 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/06 15:16:43 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,33 +66,32 @@ typedef struct s_program
 // check.c
 void	wait_for_start(t_philo *philo);
 int		check_death(t_philo *philo);
-int		monitor_philos(t_program *program);
+int		check_philos(t_program *program);
 int		can_continue(t_philo *philo);
 
-// eating.c
+// dining_actions.c
+int		check_meals(t_program *program);
 void	philo_eat(t_philo *philo);
 
-// forks_thread.c
-int		create_threads(t_program *program);
+// fork_thread.c
 void	join_threads(t_program *program);
+int		create_threads(t_program *program);
 void	take_forks(t_philo *philo, pthread_mutex_t *first,
 			pthread_mutex_t *second);
-
 void	get_forks(t_philo *philo, pthread_mutex_t **first,
 			pthread_mutex_t **second);
+
+// init.c
+int		init_program(t_program *program, int argc, char **argv);
+
+//philo_actions.c
+void	*check_routine(void *arg);
+void	*philo_routine(void *arg);
 
 // philo_utils.c
 size_t	get_current_time(void);
 int		ft_usleep(size_t milliseconds);
 int		ft_atoi(const char *str);
 void	print_message(t_philo *philo, char *msg);
-
-// init.c
-int		init_program(t_program *program, int argc, char **argv);
-
-// routine.c
-void	*philo_routine(void *arg);
-void	*monitor_routine(void *arg);
-int		check_meals(t_program *program);
 
 #endif

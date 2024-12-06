@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:18:25 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/06 13:31:05 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/06 15:17:04 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	create_threads(t_program *program)
 			return (1);
 		philo_index++;
 	}
-	if ((pthread_create(&program->monitor, NULL, monitor_routine,
+	if ((pthread_create(&program->monitor, NULL, check_routine,
 				program)) != 0)
 		return (1);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/05 13:01:06 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/06 15:07:19 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_atoi(const char *str)
 	sign = 1;
 	while ((str[index] == ' ' || (str[index] >= 9 && str[index] <= 13)) != 0)
 		index++;
-	if ((str[index] == '-' || str[index] == '+') != 0)
+	if ((str[index] == '+' || str[index] == '-') != 0)
 	{
 		if ((str[index] == '-') != 0)
 			sign = -1;

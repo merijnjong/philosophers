@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routine.c                                          :+:      :+:    :+:   */
+/*   philo_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 11:06:16 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/05 13:03:45 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/06 15:09:58 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	*philo_routine(void *arg)
 	return (NULL);
 }
 
-void	*monitor_routine(void *arg)
+void	*check_routine(void *arg)
 {
 	t_program	*program;
 
@@ -69,7 +69,7 @@ void	*monitor_routine(void *arg)
 	wait_for_start(&program->philos[0]);
 	while (1)
 	{
-		if ((monitor_philos(program)) != 0)
+		if ((check_philos(program)) != 0)
 			return (NULL);
 		if ((check_meals(program)) != 0)
 			return (NULL);
