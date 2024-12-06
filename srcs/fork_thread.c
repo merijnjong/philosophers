@@ -38,15 +38,15 @@ void	take_forks(t_philo *philo, pthread_mutex_t *first,
 
 int	create_threads(t_program *program)
 {
-	int	i;
+	int	philo_index;
 
-	i = 0;
-	while (i < program->philos[0].num_of_philos)
+	philo_index = 0;
+	while (philo_index < program->philos[0].num_of_philos)
 	{
-		if ((pthread_create(&program->philos[i].thread, NULL, philo_routine,
-				&program->philos[i])) != 0)
+		if ((pthread_create(&program->philos[philo_index].thread, NULL, philo_routine,
+				&program->philos[philo_index])) != 0)
 			return (1);
-		i++;
+		philo_index++;
 	}
 	if ((pthread_create(&program->monitor, NULL, monitor_routine, program)) != 0)
 		return (1);
@@ -55,13 +55,13 @@ int	create_threads(t_program *program)
 
 void	join_threads(t_program *program)
 {
-	int	i;
+	int	philo_index;
 
-	i = 0;
-	while (i < program->philos[0].num_of_philos)
+	philo_index = 0;
+	while (philo_index < program->philos[0].num_of_philos)
 	{
-		pthread_join(program->philos[i].thread, NULL);
-		i++;
+		pthread_join(program->philos[philo_index].thread, NULL);
+		philo_index++;
 	}
 	pthread_join(program->monitor, NULL);
 }

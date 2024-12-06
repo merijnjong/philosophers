@@ -33,25 +33,25 @@ int	ft_usleep(size_t milliseconds)
 
 int	ft_atoi(const char *str)
 {
-	int		i;
+	int		index;
 	long	result;
 	int		sign;
 
-	i = 0;
+	index = 0;
 	result = 0;
 	sign = 1;
-	while ((str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)) != 0)
-		i++;
-	if ((str[i] == '-' || str[i] == '+') != 0)
+	while ((str[index] == ' ' || (str[index] >= 9 && str[index] <= 13)) != 0)
+		index++;
+	if ((str[index] == '-' || str[index] == '+') != 0)
 	{
-		if ((str[i] == '-') != 0)
+		if ((str[index] == '-') != 0)
 			sign = -1;
-		i++;
+		index++;
 	}
-	while ((str[i] >= '0' && str[i] <= '9') != 0)
+	while ((str[index] >= '0' && str[index] <= '9') != 0)
 	{
-		result = result * 10 + (str[i] - '0');
-		i++;
+		result = result * 10 + (str[index] - '0');
+		index++;
 	}
 	return (sign * result);
 }

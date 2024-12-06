@@ -14,24 +14,24 @@
 
 static int	check_args(int argc, char **argv)
 {
-	int	i;
-	int	j;
+	int	arg_index;
+	int	char_index;
 
 	if ((argc != 5 && argc != 6) != 0)
 		return (1);
-	i = 1;
-	while (argv[i] != NULL)
+	arg_index = 1;
+	while (argv[arg_index] != NULL)
 	{
-		j = 0;
-		while (argv[i][j] != 0)
+		char_index = 0;
+		while (argv[arg_index][char_index] != 0)
 		{
-			if ((argv[i][j] < '0' || argv[i][j] > '9') != 0)
+			if ((argv[arg_index][char_index] < '0' || argv[arg_index][char_index] > '9') != 0)
 				return (1);
-			j++;
+			char_index++;
 		}
-		if ((ft_atoi(argv[i]) <= 0) != 0)
+		if ((ft_atoi(argv[arg_index]) <= 0) != 0)
 			return (1);
-		i++;
+		arg_index++;
 	}
 	return (0);
 }

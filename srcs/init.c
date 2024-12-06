@@ -14,17 +14,17 @@
 
 static int	init_mutexes(t_program *program, int num_philos)
 {
-	int	i;
+	int	mutex_index;
 
 	program->forks = malloc(sizeof(pthread_mutex_t) * num_philos);
 	if (program->forks == NULL)
 		return (1);
-	i = 0;
-	while (i < num_philos)
+	mutex_index = 0;
+	while (mutex_index < num_philos)
 	{
-		if ((pthread_mutex_init(&program->forks[i], NULL)) != 0)
+		if ((pthread_mutex_init(&program->forks[mutex_index], NULL)) != 0)
 			return (1);
-		i++;
+		mutex_index++;
 	}
 	if ((pthread_mutex_init(&program->write_lock, NULL)) != 0)
 		return (1);
