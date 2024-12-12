@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:12:23 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/05 12:58:28 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/12 15:09:15 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,13 @@ int	init_program(t_program *program, int argc, char **argv)
 		return (1);
 	assign_forks(program, num_philos);
 	return (0);
+}
+
+void	init_philo_state(t_philo *philo)
+{
+	pthread_mutex_lock(philo->meal_lock);
+	philo->last_meal = get_current_time();
+	pthread_mutex_unlock(philo->meal_lock);
+	if ((philo->id % 2) != 0)
+		ft_usleep2(philo, philo->time_to_eat);
 }

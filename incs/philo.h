@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 14:45:53 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/12 13:25:24 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/12 15:08:05 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,38 +29,38 @@
 
 typedef struct s_philo
 {
-	pthread_t			thread;
 	int					id;
 	int					eating;
 	int					meals_eaten;
-	size_t				last_meal;
-	size_t				time_to_die;
-	size_t				time_to_eat;
-	size_t				time_to_sleep;
-	size_t				start_time;
 	int					num_of_philos;
 	int					num_times_to_eat;
 	int					*dead;
+	size_t				start_time;
+	size_t				last_meal;
+	size_t				time_to_eat;
+	size_t				time_to_sleep;
+	size_t				time_to_die;
+	pthread_t			thread;
 	pthread_mutex_t		*r_fork;
 	pthread_mutex_t		*l_fork;
-	pthread_mutex_t		*write_lock;
+	pthread_mutex_t		*start_lock;
 	pthread_mutex_t		*dead_lock;
 	pthread_mutex_t		*meal_lock;
-	pthread_mutex_t		*start_lock;
+	pthread_mutex_t		*write_lock;
 	struct s_program	*program;
 }	t_philo;
 
 typedef struct s_program
 {
-	int					dead_flag;
 	int					start_flag;
+	int					dead_flag;
+	pthread_t			monitor;
+	pthread_mutex_t		start_lock;
 	pthread_mutex_t		dead_lock;
 	pthread_mutex_t		meal_lock;
 	pthread_mutex_t		write_lock;
-	pthread_mutex_t		start_lock;
 	pthread_mutex_t		*forks;
 	t_philo				*philos;
-	pthread_t			monitor;
 }	t_program;
 
 // check.c
@@ -83,10 +83,10 @@ void	get_forks(t_philo *philo, pthread_mutex_t **first,
 
 // init.c
 int		init_program(t_program *program, int argc, char **argv);
+void	init_philo_state(t_philo *philo);
 
 //philo_actions.c
 void	*check_routine(void *arg);
-// void	*check_routine(t_philo *philo, void *arg);
 void	*philo_routine(void *arg);
 
 // philo_utils.c

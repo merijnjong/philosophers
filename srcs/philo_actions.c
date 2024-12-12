@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 11:06:16 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/12 13:25:20 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/12 15:07:09 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,12 @@ static void	handle_single_philo(t_philo *philo)
 	pthread_mutex_unlock(philo->r_fork);
 }
 
-static void	init_philo_state(t_philo *philo)
-{
-	pthread_mutex_lock(philo->meal_lock);
-	philo->last_meal = get_current_time();
-	pthread_mutex_unlock(philo->meal_lock);
-	if ((philo->id % 2) != 0)
-		ft_usleep2(philo, philo->time_to_eat);
-}
-
 static void	philo_cycle(t_philo *philo)
 {
 	print_message(philo, THINKING);
 	ft_usleep(1);
 	philo_eat(philo);
-	if ((philo->meals_eaten != philo->num_times_to_eat) != 0)
+	if (philo->meals_eaten != philo->num_times_to_eat)
 	{
 		print_message(philo, SLEEPING);
 		ft_usleep2(philo, philo->time_to_sleep);
@@ -50,7 +41,7 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	wait_for_start(philo);
-	if ((philo->num_of_philos == 1) != 0)
+	if (philo->num_of_philos == 1)
 	{
 		handle_single_philo(philo);
 		return (NULL);
@@ -69,9 +60,9 @@ void	*check_routine(void *arg)
 	wait_for_start(&program->philos[0]);
 	while (1)
 	{
-		if ((check_philos(program)) != 0)
+		if (check_philos(program) != 0)
 			return (NULL);
-		if ((check_meals(program)) != 0)
+		if (check_meals(program) != 0)
 			return (NULL);
 		usleep(50);
 	}
