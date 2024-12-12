@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/06 15:07:19 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/12 13:27:26 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,17 @@ int	ft_usleep(size_t milliseconds)
 	while ((get_current_time() - start) < milliseconds)
 		usleep(500);
 	return (0);
+}
+
+int	ft_usleep2(t_philo *philo, size_t milliseconds)
+{
+	size_t	start;
+
+	start = get_current_time();
+	while ((get_current_time() - start) < milliseconds
+		&& !check_death(philo))
+		usleep(150);
+	return (1);
 }
 
 int	ft_atoi(const char *str)

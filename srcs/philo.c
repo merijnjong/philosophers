@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 14:45:51 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/06 13:31:32 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/12 12:54:10 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ static void	cleanup(t_program *program)
 
 static void	set_simulation_start(t_program *program)
 {
-	int		i;
 	size_t	start_time;
+	int		i;
 
 	start_time = get_current_time();
 	i = 0;

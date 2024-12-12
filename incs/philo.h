@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 14:45:53 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/06 15:16:43 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/12 13:25:24 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,13 @@ int		init_program(t_program *program, int argc, char **argv);
 
 //philo_actions.c
 void	*check_routine(void *arg);
+// void	*check_routine(t_philo *philo, void *arg);
 void	*philo_routine(void *arg);
 
 // philo_utils.c
 size_t	get_current_time(void);
 int		ft_usleep(size_t milliseconds);
+int		ft_usleep2(t_philo *philo, size_t milliseconds);
 int		ft_atoi(const char *str);
 void	print_message(t_philo *philo, char *msg);
 

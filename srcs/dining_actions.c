@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 18:01:45 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/06 13:32:04 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/12 13:14:39 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	philo_eat(t_philo *philo)
 	get_forks(philo, &first_fork, &second_fork);
 	take_forks(philo, first_fork, second_fork);
 	start_eating(philo);
-	ft_usleep(philo->time_to_eat);
+	ft_usleep2(philo, philo->time_to_eat);
 	finish_eating(philo, first_fork, second_fork);
 }
 

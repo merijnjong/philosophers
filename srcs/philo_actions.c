@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 11:06:16 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/06 15:09:58 by mjong            ###   ########.fr       */
+/*   Updated: 2024/12/12 13:25:20 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	init_philo_state(t_philo *philo)
 	philo->last_meal = get_current_time();
 	pthread_mutex_unlock(philo->meal_lock);
 	if ((philo->id % 2) != 0)
-		ft_usleep(philo->time_to_eat);
+		ft_usleep2(philo, philo->time_to_eat);
 }
 
 static void	philo_cycle(t_philo *philo)
@@ -40,7 +40,7 @@ static void	philo_cycle(t_philo *philo)
 	if ((philo->meals_eaten != philo->num_times_to_eat) != 0)
 	{
 		print_message(philo, SLEEPING);
-		ft_usleep(philo->time_to_sleep);
+		ft_usleep2(philo, philo->time_to_sleep);
 	}
 }
 
